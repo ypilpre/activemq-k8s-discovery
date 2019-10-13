@@ -100,10 +100,10 @@ public class KubernetesDiscoveryAgent implements DiscoveryAgent {
     private class KubernetesPodEnumerator implements Runnable {
         @Override
         public void run() {
-            LOG.info("Enumeration loop starting");
+            LOG.debug("Enumeration loop starting");
             while(running.get()) {
                 try {
-                    LOG.info("Enumerating pods with label key: {} label value: {}",
+                    LOG.debug("Enumerating pods with label key: {} label value: {}",
                             podLabelKey, podLabelValue);
                     final Set<String> availableServices = client.pods().inNamespace(namespace)
                         .withLabel(podLabelKey, podLabelValue)
@@ -125,7 +125,7 @@ public class KubernetesDiscoveryAgent implements DiscoveryAgent {
                             .filter(svc -> !availableServices.contains(svc))
                             .collect(Collectors.toList());
 
-                    LOG.info("Found {} services: {} to add, and {} to remove.",
+                    LOG.debug("Found {} services: {} to add, and {} to remove.",
                             availableServices.size(), servicesToAdd.size(), servicesToRemove.size());
 
                     // Add those that need adding
@@ -185,10 +185,12 @@ public class KubernetesDiscoveryAgent implements DiscoveryAgent {
                 case "PodScheduled":
                 case "Initialized":
                     return true;
+                case "ContainersReady":
+                    return c.getStatus().equals("True");
                 case "Ready":
                     return c.getStatus().equals("True");
                 default:
-                    LOG.warn("Do not know what to make of status "+c.getType()+", just returning true.");
+                    LOG.debug("Do not know what to make of status "+c.getType()+", just returning true.");
                     return  true;
             }
         }

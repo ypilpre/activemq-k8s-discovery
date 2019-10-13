@@ -4,9 +4,9 @@
   <groupId>ca.jessewhite.activemq</groupId>
   <artifactId>activemq-k8s-discovery</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.2</version>
+  <version>1.0.5</version>
   <name>activemq-k8s-discovery</name>
-  <url>https://github.com/j-white/activemq-k8s-discovery</url>
+  <url>https://github.com/ypilpre/activemq-k8s-discovery</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
